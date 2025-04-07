@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 export default function Navbar() {
   return (
-    <nav className="bg-[url(/players1.jpg)] bg-[0%_7.6%] text-blue-600">
+    <nav className="bg-transparent text-blue-600">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold flex items-center">
           <svg className="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="currentColor">

@@ -10,8 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import PlayerCard from '@/components/playerCard'
-import SimilarityEngine from '@/components/similarityEngine'
-import PlayerProfileCard from '@/components/playerProfile'
+
 
 // Predefined lists for positions and roles
 const POSITIONS = [
@@ -101,52 +100,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Featured Player Details */}
-            <section className="container mx-auto px-4">
-                <div className="flex flex-row gap-4">
-                    <div className="basis-4/6">
-                        <PlayerProfileCard />
-                    </div>
-                    <div className="basis-2/6">
-                        <SimilarityEngine />
-                    </div>
-                </div>
-                <div className="bg-white shadow-lg rounded-lg overflow-hidden flex">
-                    {/* Player Image */}
-                    <div className="w-1/3 relative">
-                        <Image
-                            src="/salah.png"
-                            alt="Erling Haaland"
-                            layout="fill"
-                        />
-                    </div>
-
-                    {/* Player Details */}
-                    <div className="w-2/3 p-6">
-                        <h2 className="text-3xl font-bold mb-4">Erling Haaland</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <p className="font-semibold">Team</p>
-                                <p>Manchester City</p>
-                            </div>
-                            <div>
-                                <p className="font-semibold">League</p>
-                                <p>Premier League</p>
-                            </div>
-                            <div>
-                                <p className="font-semibold">Position</p>
-                                <p>Striker</p>
-                            </div>
-                            <div>
-                                <p className="font-semibold">Age</p>
-                                <p>23</p>
-                            </div>
-                        </div>
-
-                        
-                    </div>
-                </div>
-            </section>
+            
         </div>
     )
 }
