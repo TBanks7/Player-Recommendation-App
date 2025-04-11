@@ -1,4 +1,5 @@
 // app/page.tsx
+"use client"
 import Image from 'next/image'
 import {
     Select,
@@ -10,6 +11,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import PlayerCard from '@/components/playerCard'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { API_URL } from '@/constants'
+import PlayerSearchAutocomplete from '@/components/playerSearch'
+import SearchableDropdown from '@/components/playerSearch'
+import { useRouter } from 'next/navigation'
 
 
 // Predefined lists for positions and roles
@@ -24,18 +31,41 @@ const ROLES = {
     Goalkeeper: ['Goalkeeper']
 }
 
+
+// Fetch player profile data from the API
+
+const fetchPlayerProfile = () => {
+
+    axios.get(`${API_URL}/player/`).then((response) => {
+        setDraft(response.data[0]);
+        setIsLoading(false)
+    })
+}
+
 export default function Home() {
+    const router = useRouter();
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
+
+    const handleSearch = () => {
+        if (selectedPlayer) {
+            // Navigate to player view page with the player name as a query parameter
+            router.push(`/player-view?player=${encodeURIComponent(selectedPlayer.Player)}`);
+        } else {
+            // Optionally show an alert or toast if no player is selected
+            alert("Please select a player first");
+        }
+    };
     return (
         <div className="space-y-8">
             {/* Hero Search Section */}
-            <div className="bg-[url(/players1.jpg)] bg-[0%_20%] text-white py-32">
+            <div className="bg-[url(/players1.jpg)] bg-[0%_20%] py-32">
                 <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-4xl font-bold mb-6">Search Player or Roles</h1>
+                    <h1 className="text-4xl text-white font-bold mb-6">Search Player or Roles</h1>
 
                     {/* Advanced Search */}
-                    <div className="max-w-2xl mx-auto space-y-4">
-                        <div className="flex space-x-4">
-                            <Select className="">
+                    <div className="max-w-2xl mx-auto">
+                        <div className="flex justify-center space-x-4">
+                            {/* <Select className="">
                                 <SelectTrigger className="w-[180px] bg-white">
                                     <SelectValue placeholder="Position" />
                                 </SelectTrigger>
@@ -61,15 +91,16 @@ export default function Home() {
                                         ))
                                     )}
                                 </SelectContent>
-                            </Select>
+                            </Select> */}
+                            <SearchableDropdown onPlayerSelect={setSelectedPlayer}/>
+                            
 
-                            <Input
-                                type="text"
-                                placeholder="Search by player name"
-                                className="flex-grow bg-white"
-                            />
-
-                            <Button>Search</Button>
+                            <Button
+                                className="text-white hover:bg-blue-700 h-auto"
+                                onClick={handleSearch}
+                            >
+                                Search
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -100,7 +131,7 @@ export default function Home() {
                 </div>
             </section>
 
-            
+
         </div>
     )
 }

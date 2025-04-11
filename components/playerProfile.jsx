@@ -1,24 +1,35 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { positionMap } from '@/constants';
 
-const PlayerProfileCard = ({
-  name = "Mohammed Salah",
-  team = "Liverpool",
-  height = "194 cm",
-  shirtNumber = "11",
-  age = "34",
-  birthDate = "Jul 21, 2000",
-  preferredFoot = "Left",
-  country = "Norway",
-  marketValue = "€70M",
-  primaryPosition = "RW",
-  imageUrl = "/salah.png" // Replace with actual image path
-}) => {
+const PlayerProfileCard = ({ playerData }) => {
+  console.log(JSON.parse(JSON.stringify(playerData)))
+  const {
+    player: name,
+    team,
+    comp,
+    position: primaryPosition,
+    primary_role: playerRole,
+    url,
+    height,
+    shirt_number: shirtNumber,
+    age,
+    dob: birthDate,
+    foot: preferredFoot,
+    nation: country,
+    market_value: marketValue
+  } = playerData;
+
+  // Extracting the player ID from the URL
+  const playerId = url.split('/')[5]; // Extract "1f44ac21"
+  const imageUrl = `https://fbref.com/req/202302030/images/headshots/${playerId}_2022.jpg`;  
+
+
   return (
     <div className="mx-auto">
       {/* Header with background */}
-      <div className="bg-red-500 rounded-t-lg p-4 flex justify-between items-center">
+      <div className="bg-blue-500 rounded-t-lg p-4 flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <img
             src={imageUrl}
@@ -45,7 +56,7 @@ const PlayerProfileCard = ({
         <div className='basis-1/2 grid grid-cols-2 gap-4'>
           <div className=''>
             <span className="text-gray-500 text-xs block">Height</span>
-            <span className="font-semibold">{height}</span>
+            <span className="font-semibold">{height}m</span>
           </div>
           <div className=''>
             <span className="text-gray-500 text-xs block">Shirt Number</span>
@@ -58,13 +69,13 @@ const PlayerProfileCard = ({
           </div>
           <div className=''>
             <span className="text-gray-500 text-xs block">Preferred Foot</span>
-            <span className="font-semibold">{preferredFoot}</span>
+            <span className="font-semibold">{preferredFoot.charAt(0).toUpperCase() + preferredFoot.slice(1)}</span>
           </div>
           <div className=''>
             <span className="text-gray-500 text-xs block">Country</span>
             <span className="font-semibold flex items-center">
               <img
-                src={`/flags/${country.toLowerCase()}.png`}
+                src={`https://images.fotmob.com/image_resources/logo/teamlogo/${country.toLowerCase()}.png`}
                 alt={country}
                 className="w-4 h-4 mr-2 rounded-sm"
               />
@@ -73,14 +84,33 @@ const PlayerProfileCard = ({
           </div>
           <div className=''>
             <span className="text-gray-500 text-xs block">Market Value</span>
-            <span className="font-semibold text-green-600">{marketValue}</span>
+            <span className="font-semibold text-green-600">€{marketValue}</span>
           </div>
 
 
 
         </div>
         <div className='basis-1/2'>
-          {/* <img src="/small-pitch.png" alt="" /> */}
+          <div className='flex gap-3 float-end'>
+            <div className='flex flex-col gap-4'>
+              <div>
+                <span className="text-gray-500 text-xs block">Primary Position</span>
+                <span className="font-semibold text-blue-500">{primaryPosition}</span>
+              </div>
+
+              <div>
+                <span className="text-gray-500 text-xs block">Player Role</span>
+                <span className="font-semibold text-blue-500">{playerRole}</span>
+              </div>
+
+            </div>
+            <div>
+              <img height={200} width={200} src="/pitch1.svg" alt="Alternative text"></img>
+              <div className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center text-sm text-white bg-black p-1">{positionMap[primaryPosition]}</div>
+            </div>
+          </div>
+
+
         </div>
         <div>
 
@@ -88,15 +118,6 @@ const PlayerProfileCard = ({
 
       </div>
 
-      {/* Pitch Position Visualization */}
-      <div className="bg-white p-4 border-t">
-        <div className="w-full aspect-square bg-gray-100 rounded-lg relative">
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-            bg-blue-500 text-white px-2 py-1 rounded text-xs">
-            {primaryPosition}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
