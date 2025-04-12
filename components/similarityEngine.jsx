@@ -15,51 +15,52 @@ import { FilterIcon } from 'lucide-react';
 const similarPlayersData = [
   {
     id: 1,
-    name: "Mohamed Salah",
-    team: "Liverpool",
-    image: "/salah.png",
-    matchPercentage: 92,
+    name: "Khvicha Kvaratskhelia",  
+    team: " Napoli",
+    image: "https://fbref.com/req/202302030/images/headshots/dea88efd_2022.jpg",
+    matchPercentage: 95,
     marketValue: 80000000,
-    age: 31,
-    preferredFoot: "Right",
-    positions: ["Right Wing", "Forward"]
+    age: 23,
+    preferredFoot: "Both",
+    positions: ["Left Winger", "Attacking Midfield"]
   },
   {
     id: 2,
-    name: "Harry Kane",
-    team: "Bayern Munich", 
-    image: "/salah.png",
-    matchPercentage: 88,
-    marketValue: 90000000,
-    age: 30,
-    preferredFoot: "Both",
-    positions: ["Striker", "Center Forward"]
+    name: "Marcus Rashford",
+    team: "Manchester United", 
+    image: "https://fbref.com/req/202302030/images/headshots/a1d5bd30_2022.jpg",
+    matchPercentage: 93,
+    marketValue: 60000000,
+    age: 26,
+    preferredFoot: "right",
+    positions: ["Left Winger", "Attacking Midfield"]
   },
   {
     id: 3,
-    name: "Kylian Mbappe",
+    name: "Rodrygo",
     team: "Real Madrid",
-    image: "/salah.png", 
-    matchPercentage: 85,
-    marketValue: 180000000,
-    age: 25,
-    preferredFoot: "Right",
-    positions: ["Left Wing", "Forward"]
+    image: "https://fbref.com/req/202302030/images/headshots/8f5e92a6_2022.jpg", 
+    matchPercentage: 93,
+    marketValue: 110000000,
+    age: 23,
+    preferredFoot: "right",
+    positions: ["Right Winger", "Attacking Midfield"]
   },
   {
     id: 4,
-    name: "Neymar",
-    team: "Al-Hilal",
-    image: "/salah.png", 
-    matchPercentage: 82,
-    marketValue: 50000000,
-    age: 32,
-    preferredFoot: "Left",
-    positions: ["Left Wing", "Forward"]
+    name: "Mason Greenwood",
+    team: "Getafe",
+    image: "https://fbref.com/req/202302030/images/headshots/58eee997_2022.jpg",
+    matchPercentage: 92,
+    marketValue: 25000000,
+    age: 22,
+    preferredFoot: "Both",
+    positions: ["Right Winger", "Attacking Midfield"]
   }
 ];
 
-const SimilarityEngine = () => {
+const SimilarityEngine = ({similarityData}) => {
+  console.log(similarityData)
   // State for filters
   const [filters, setFilters] = useState({
     marketValueRange: [0, 200000000],
@@ -72,7 +73,7 @@ const SimilarityEngine = () => {
   });
 
   // Filter players based on current filter settings
-  const filteredPlayers = similarPlayersData.filter(player => {
+  const filteredPlayers = similarityData.similar_players.filter(player => {
     // Market Value Filter
     const meetsMarketValue = 
       player.marketValue >= filters.marketValueRange[0] && 

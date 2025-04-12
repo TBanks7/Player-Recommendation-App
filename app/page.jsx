@@ -113,20 +113,20 @@ export default function Home() {
                     <PlayerCard
                         name="Erling Haaland"
                         team="Manchester City"
-                        position="Striker"
-                        imageUrl="/haaland.jpg"
+                        position="Center Forward"
+                        imageUrl="https://fbref.com/req/202302030/images/headshots/1f44ac21_2022.jpg"
                     />
                     <PlayerCard
                         name="Kevin De Bruyne"
                         team="Manchester City"
-                        position="Midfielder"
-                        imageUrl="/de-bruyne.jpg"
+                        position="Attacking Midfield"
+                        imageUrl="https://fbref.com/req/202302030/images/headshots/e46012d4_2022.jpg"
                     />
                     <PlayerCard
                         name="Virgil van Dijk"
                         team="Liverpool"
-                        position="Defender"
-                        imageUrl="/van-dijk.jpg"
+                        position="Center Back"
+                        imageUrl="https://fbref.com/req/202302030/images/headshots/e06683ca_2022.jpg"
                     />
                 </div>
             </section>

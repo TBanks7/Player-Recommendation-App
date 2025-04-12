@@ -3,11 +3,9 @@
 import React from 'react'
 import SimilarityEngine from '@/components/similarityEngine'
 import PlayerProfileCard from '@/components/playerProfile'
-import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { API_URL } from '@/constants'
-import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation';
 import PlayerStatsRadarCard from '@/components/abilityCard'
 
@@ -15,10 +13,10 @@ import PlayerStatsRadarCard from '@/components/abilityCard'
 
 const playerPage = () => {
     const searchParams = useSearchParams();
-  const player = searchParams.get('player');
-    const router = useRouter();
-    console.log(router)
+    const player = searchParams.get('player');
     const [playerData, setPlayerData] = useState(null);
+    const [statData, setStatData] = useState(null);
+    const [similarityData, setSimilarityData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -47,6 +45,43 @@ const playerPage = () => {
             }
         }
 
+        async function fetchPlayerStats(){
+            try {
+                const response = await axios.get(`${API_URL}/percentile-rank`, {
+                    params: {
+                      player: player // Axios automatically encodes the value
+                    }
+                  });
+                  console.log(response.data)
+                setStatData(response.data);
+            } catch (err) {
+                console.error('Error fetching player details:', err);
+                setError('Failed to load player details');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function fetchSimilarityEngine(){
+            try {
+                const response = await axios.get(`${API_URL}/similar-players`, {
+                    params: {
+                      player: player // Axios automatically encodes the value
+                    }
+                  });
+                  console.log(response.data)
+                setSimilarityData(response.data);
+            } catch (err) {
+                console.error('Error fetching player details:', err);
+                setError('Failed to load player details');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+
+        fetchSimilarityEngine();
+        fetchPlayerStats();
         fetchPlayerDetails();
     }, [player]);
 
@@ -65,11 +100,11 @@ const playerPage = () => {
                         <PlayerProfileCard playerData={playerData}/>
                     </div>
                     <div className="basis-2/6">
-                        <PlayerStatsRadarCard playerData={playerData} />
+                        <PlayerStatsRadarCard statData={statData} position={playerData.position} />
                     </div>
                 </div>
                 <div>
-                    <SimilarityEngine />
+                    <SimilarityEngine similarityData={similarityData}/>
                 </div>
                 {/* <div className="bg-white shadow-lg rounded-lg overflow-hidden flex">
                     ///Player Image

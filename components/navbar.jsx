@@ -15,11 +15,11 @@ export default function Navbar() {
         </Link>
         <div className="flex items-center space-x-4">
           <Link href="#" className="hover:underline">Home</Link>
-          <Link href="#" className="hover:underline">Search</Link>
-          <Link href="#" className="hover:underline">About</Link>
+          <Link href="#" className="hover:underline">Compare</Link>
+          {/* <Link href="#" className="hover:underline">About</Link>
           <Button variant="outline" className="text-blue-700 border-white hover:bg-white hover:text-blue-700">
             Sign In
-          </Button>
+          </Button> */}
         </div>
       </div>
     </nav>

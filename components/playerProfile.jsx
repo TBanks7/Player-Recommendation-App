@@ -21,9 +21,36 @@ const PlayerProfileCard = ({ playerData }) => {
     market_value: marketValue
   } = playerData;
 
+
+  // Position coordinates mapping (percentage based)
+  const positionCoordinates = {
+    // Defenders
+    'Left-Back': { x: 28, y: 80 },
+    'Right-Back': { x: 72, y: 80 },
+    'Centre-Back': { x: 50, y: 80 },
+
+    // Midfielders
+    'Left Midfield': { x: 28, y: 60 },
+    'Right Midfield': { x: 72, y: 60 },
+    'Central Midfield': { x: 50, y: 60 },
+    'Attacking Midfield': { x: 50, y: 40 },
+    'Defensive Midfield': { x: 50, y: 70 },
+
+    // Forwards
+    'Left Winger': { x: 28, y: 30 },
+    'Right Winger': { x: 72, y: 30 },
+    'Centre-Forward': { x: 50, y: 20 },
+    'Second Striker': { x: 50, y: 30 },
+
+    // Goalkeeper
+    'Goalkeeper': { x: 50, y: 95 }
+  };
+
+  const position = positionCoordinates[primaryPosition] || { x: 50, y: 50 };
+
   // Extracting the player ID from the URL
   const playerId = url.split('/')[5]; // Extract "1f44ac21"
-  const imageUrl = `https://fbref.com/req/202302030/images/headshots/${playerId}_2022.jpg`;  
+  const imageUrl = `https://fbref.com/req/202302030/images/headshots/${playerId}_2022.jpg`;
 
 
   return (
@@ -104,9 +131,16 @@ const PlayerProfileCard = ({ playerData }) => {
               </div>
 
             </div>
-            <div>
+            <div className='relative'>
               <img height={200} width={200} src="/pitch1.svg" alt="Alternative text"></img>
-              <div className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center text-sm text-white bg-black p-1">{positionMap[primaryPosition]}</div>
+              <div
+                className="absolute rounded-full flex items-center justify-center text-sm text-white bg-black p-1 h-8 w-8"
+                style={{
+                  left: `${position.x}%`,
+                  top: `${position.y}%`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+              >{positionMap[primaryPosition]}</div>
             </div>
           </div>
 

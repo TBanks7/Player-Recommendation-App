@@ -1307,3 +1307,114 @@ if 'Age' in player_system.data.columns:
 
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def get_player_percentile_stats(self, player_name: str) -> Dict[str, List[Dict]]:
+      
+      """
+      Generate percentile and raw stat summaries for a player's relevant metrics
+      based on position group and most likely role.
+
+      Returns:
+          {
+              "position_group": [ {name, percentile, rawValue, metric}, ... ],
+              "role_group": [ {name, percentile, rawValue, metric}, ... ]
+          }
+      """
+      self._ensure_data_loaded()
+      
+      # Step 1: Get player row
+      player_row = self.data[self.data['Player'] == player_name]
+      if player_row.empty:
+          raise ValueError(f"Player '{player_name}' not found in dataset.")
+      
+      player_row = player_row.iloc[0]
+      position = player_row['TmPos']
+      
+      # Step 2: Get roles and most probable role
+      role_probs = self.get_role_probabilities(player_name)
+      primary_role = max(role_probs.items(), key=lambda x: x[1])[0]
+      
+      # Step 3: Get relevant metrics
+      role_metrics = self.classifier.role_metrics.get(primary_role, [])
+      position_group = self.classifier.get_position_group(position)
+      
+      result = {
+          "position_group": [],
+          "role_group": []
+      }
+
+      # Filter players in position group
+      pos_group_df = self.data[self.data['TmPos'].isin(position_group)].copy()
+
+      # NEW: Filter players with same role
+      # Get all players with this as their primary role
+      role_players = []
+      for p_name in pos_group_df['Player']:
+        p_probs = self.get_role_probabilities(p_name)
+        if p_probs and max(p_probs.items(), key=lambda x: x[1])[0] == primary_role:
+            role_players.append(p_name)
+    
+      role_group_df = self.data[self.data['Player'].isin(role_players)].copy()
+    
+      # If role group is too small, fall back to position group
+      if len(role_group_df) < 5:  # Minimum threshold
+        role_group_df = pos_group_df.copy()
+        print(f"Warning: Only {len(role_players)} players found for role {primary_role}, using position group instead")
+    
+      
+      # Step 4: Calculate percentiles
+      for metric in role_metrics:
+          if metric in self.data.columns:
+              player_value = player_row[metric]
+              # Calculate percentiles
+              pos_vals = pos_group_df[metric].dropna()
+              role_vals = role_group_df[metric].dropna()
+
+              pos_percentile = round((pos_vals < player_value).mean() * 100, 1)
+              role_percentile = round((role_vals < player_value).mean() * 100, 1)
+
+              # Get readable name and unit (optional enhancements)
+              name = metric.replace("_", " ")
+              unit = "per 90" if "per_90" in metric or metric.endswith("_90") else ""
+
+              result["position_group"].append({
+                  "name": name,
+                  "percentile": pos_percentile,
+                  "rawValue": player_value,
+                  "metric": unit
+              })
+
+              result["role_group"].append({
+                  "name": name,
+                  "percentile": role_percentile,
+                  "rawValue": player_value,
+                  "metric": unit
+              })
+      
+      return result
