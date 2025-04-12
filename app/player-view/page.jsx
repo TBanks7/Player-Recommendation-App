@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import SimilarityEngine from '@/components/similarityEngine'
 import PlayerProfileCard from '@/components/playerProfile'
 import { useState, useEffect } from 'react'
@@ -9,9 +9,8 @@ import { API_URL } from '@/constants'
 import { useSearchParams } from 'next/navigation';
 import PlayerStatsRadarCard from '@/components/abilityCard'
 
-
-
-const playerPage = () => {
+// Move the main component logic to a separate function
+function PlayerPageContent() {
     const searchParams = useSearchParams();
     const player = searchParams.get('player');
     const [playerData, setPlayerData] = useState(null);
@@ -20,8 +19,7 @@ const playerPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-
-
+    
     useEffect(() => {
         // Fetch player details when the component mounts and we have a player name
         async function fetchPlayerDetails() {
@@ -89,11 +87,8 @@ const playerPage = () => {
     if (error) return <div className="text-red-500">{error}</div>;
     if (!playerData) return <div>No player data available</div>;
 
-
-
     return (
         <div>
-            {/* Featured Player Details */}
             <section className="container mx-auto px-4">
                 <div className="flex flex-row gap-4">
                     <div className="basis-4/6">
@@ -106,18 +101,17 @@ const playerPage = () => {
                 <div>
                     <SimilarityEngine similarityData={similarityData}/>
                 </div>
-                {/* <div className="bg-white shadow-lg rounded-lg overflow-hidden flex">
-                    ///Player Image
-                    <div className="w-1/3 relative">
-                        <Image
-                            src="/salah.png"
-                            alt="Erling Haaland"
-                            layout="fill"
-                        />
-                    </div>
-                </div> */}
             </section>
         </div>
+    )
+}
+
+// Create the main page component with Suspense
+const playerPage = () => {
+    return (
+        <Suspense fallback={<div>Loading search parameters...</div>}>
+            <PlayerPageContent />
+        </Suspense>
     )
 }
 
