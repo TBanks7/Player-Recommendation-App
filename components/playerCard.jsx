@@ -49,7 +49,7 @@ const PlayerCard = ({ name, team, position, imageUrl }) => {
           <Image
             width={80}
             height={80}
-            src='/salah.png'
+            src={imageUrl}
             alt='Mohamed Salah'
             className="rounded-full"
           />
