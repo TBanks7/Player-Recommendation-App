@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { positionMap } from '@/constants';
 
 const PlayerProfileCard = ({ playerData }) => {
-  console.log(JSON.parse(JSON.stringify(playerData)))
   const {
     player: name,
     team,
@@ -111,7 +110,7 @@ const PlayerProfileCard = ({ playerData }) => {
           </div>
           <div className=''>
             <span className="text-gray-500 text-xs block">Market Value</span>
-            <span className="font-semibold text-green-600">€{marketValue}</span>
+            <span className="font-semibold text-green-600">€{marketValue.toLocaleString()}</span>
           </div>
 
 

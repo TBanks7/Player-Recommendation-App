@@ -6,7 +6,6 @@ import { Radar } from 'react-chartjs-2';
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 const PlayerStatsRadarCard = ({ stats, position }) => {
-  console.log(JSON.stringify(stats))
   // Default color scheme
   const chartColors = {
     backgroundColor: 'rgba(54, 162, 235, 0.2)',
