@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { positionMap } from '@/constants';
+import { Divide } from 'lucide-react';
 
 const PlayerProfileCard = ({ playerData }) => {
   const {
@@ -19,7 +20,6 @@ const PlayerProfileCard = ({ playerData }) => {
     nation: country,
     market_value: marketValue
   } = playerData;
-
 
   // Position coordinates mapping (percentage based)
   const positionCoordinates = {
@@ -48,56 +48,48 @@ const PlayerProfileCard = ({ playerData }) => {
   const position = positionCoordinates[primaryPosition] || { x: 50, y: 50 };
 
   // Extracting the player ID from the URL
-  const playerId = url.split('/')[5]; // Extract "1f44ac21"
+  const playerId = url.split('/')[5]; 
   const imageUrl = `https://fbref.com/req/202302030/images/headshots/${playerId}_2022.jpg`;
 
-
   return (
-    <div className="mx-auto">
+    <div className="mx-auto w-full">
       {/* Header with background */}
-      <div className="bg-blue-500 rounded-t-lg p-4 flex justify-between items-center">
-        <div className="flex items-center space-x-4">
+      <div className="bg-blue-500 rounded-t-lg p-3 md:p-4 flex flex-col sm:flex-row justify-between items-center">
+        <div className="flex items-center space-x-3 md:space-x-4 w-full sm:w-auto">
           <img
             src={imageUrl}
             alt={name}
-            className="w-20 h-20 rounded-full border-2 bg-white border-white"
+            className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 bg-white border-white"
           />
           <div>
-            <h2 className="text-2xl font-bold text-white">{name}</h2>
-            <p className="text-white text-sm">{team}</p>
+            <h2 className="text-xl md:text-2xl font-bold text-white">{name}</h2>
+            <p className="text-white text-xs md:text-sm">{team}</p>
           </div>
         </div>
       </div>
 
-      {/* Player Details Grid */}
-      {/* <div className="grid grid-cols-3 gap-4 p-4 bg-white shadow-md">
-        <div className="flex flex-col items-center">
-          <span className="text-gray-500 text-xs">Position</span>
-          <span className="font-semibold text-blue-500">{primaryPosition}</span>
-        </div>
-      </div> */}
-
       {/* Detailed Information */}
-      <div className="bg-gray-50 flex gap-4 p-4 border-t">
-        <div className='basis-1/2 grid grid-cols-2 gap-4'>
-          <div className=''>
+      <div className="bg-gray-50 flex flex-col md:flex-row gap-4 p-3 md:p-4 border-t">
+        {/* Left side - Player details */}
+        <div className='w-full md:basis-1/2 grid grid-cols-2 gap-3 md:gap-4'>
+          <div>
             <span className="text-gray-500 text-xs block">Height</span>
             <span className="font-semibold">{height}m</span>
           </div>
-          <div className=''>
+          <div>
             <span className="text-gray-500 text-xs block">Shirt Number</span>
             <span className="font-semibold">{shirtNumber}</span>
           </div>
-          <div className=''>
+          <div>
             <span className="text-gray-500 text-xs block">Age</span>
             <span className="font-semibold">{age}</span>
             <span className="text-xs text-gray-500 block">{birthDate}</span>
           </div>
-          <div className=''>
+          <div>
             <span className="text-gray-500 text-xs block">Preferred Foot</span>
             <span className="font-semibold">{preferredFoot.charAt(0).toUpperCase() + preferredFoot.slice(1)}</span>
           </div>
-          <div className=''>
+          <div>
             <span className="text-gray-500 text-xs block">Country</span>
             <span className="font-semibold flex items-center">
               <img
@@ -108,17 +100,17 @@ const PlayerProfileCard = ({ playerData }) => {
               {country}
             </span>
           </div>
-          <div className=''>
+          <div>
             <span className="text-gray-500 text-xs block">Market Value</span>
             <span className="font-semibold text-green-600">€{marketValue.toLocaleString()}</span>
           </div>
-
-
-
         </div>
-        <div className='basis-1/2'>
-          <div className='flex gap-3 float-end'>
-            <div className='flex flex-col gap-4'>
+
+        
+        {/* Right side - Position and pitch */}
+        <div className='w-full md:basis-1/2 border-t pt-4'>
+          <div className='flex flex-row md:justify-end gap-3'>
+            <div className='flex flex-col sm:flex-col justify-start gap-4'>
               <div>
                 <span className="text-gray-500 text-xs block">Primary Position</span>
                 <span className="font-semibold text-blue-500">{primaryPosition}</span>
@@ -128,12 +120,16 @@ const PlayerProfileCard = ({ playerData }) => {
                 <span className="text-gray-500 text-xs block">Player Role</span>
                 <span className="font-semibold text-blue-500">{playerRole}</span>
               </div>
-
             </div>
-            <div className='relative'>
-              <img height={200} width={200} src="/pitch1.svg" alt="Alternative text"></img>
+            
+            <div className='relative sm:w-auto'>
+              <img 
+                className="max-h-40 sm:max-h-48 md:max-h-52 mx-auto sm:mx-0" 
+                src="/pitch1.svg" 
+                alt="Pitch position"
+              />
               <div
-                className="absolute rounded-full flex items-center justify-center text-sm text-white bg-black p-1 h-8 w-8"
+                className="absolute rounded-full flex items-center justify-center text-sm text-white bg-black p-1 h-6 w-6 md:h-8 md:w-8"
                 style={{
                   left: `${position.x}%`,
                   top: `${position.y}%`,
@@ -142,15 +138,8 @@ const PlayerProfileCard = ({ playerData }) => {
               >{positionMap[primaryPosition]}</div>
             </div>
           </div>
-
-
         </div>
-        <div>
-
-        </div>
-
       </div>
-
     </div>
   );
 };

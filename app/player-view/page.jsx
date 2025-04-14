@@ -19,7 +19,6 @@ function PlayerPageContent() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    
     useEffect(() => {
         // Fetch player details when the component mounts and we have a player name
         async function fetchPlayerDetails() {
@@ -77,28 +76,44 @@ function PlayerPageContent() {
             }
         }
 
-
         fetchSimilarityEngine();
         fetchPlayerStats();
         fetchPlayerDetails();
     }, [player]);
 
-    if (loading) return <div>Loading player details...</div>;
-    if (error) return <div className="text-red-500">{error}</div>;
-    if (!playerData) return <div>No player data available</div>;
+    if (loading) return (
+        <div className="container mx-auto px-4 py-8 flex justify-center">
+            <div className="animate-pulse text-lg">Loading player details...</div>
+        </div>
+    );
+    
+    if (error) return (
+        <div className="container mx-auto px-4 py-8">
+            <div className="text-red-500 text-center">{error}</div>
+        </div>
+    );
+    
+    if (!playerData) return (
+        <div className="container mx-auto px-4 py-8">
+            <div className="text-center">No player data available</div>
+        </div>
+    );
 
     return (
         <div>
-            <section className="container mx-auto px-4">
-                <div className="flex flex-row gap-4">
-                    <div className="basis-4/6">
+            <section className="container mx-auto px-4 py-4">
+                {/* Top section with profile and radar chart */}
+                <div className="flex flex-col lg:flex-row gap-4 mb-6">
+                    <div className="w-full lg:w-2/3 bg-gray-50">
                         <PlayerProfileCard playerData={playerData}/>
                     </div>
-                    <div className="basis-2/6">
+                    <div className="w-full lg:w-1/3 mt-4 lg:mt-0">
                         <PlayerStatsRadarCard statData={statData} position={playerData.position} />
                     </div>
                 </div>
-                <div>
+                
+                {/* Similarity engine section */}
+                <div className="mt-4">
                     <SimilarityEngine similarityData={similarityData}/>
                 </div>
             </section>
@@ -107,12 +122,16 @@ function PlayerPageContent() {
 }
 
 // Create the main page component with Suspense
-const playerPage = () => {
+const PlayerPage = () => {
     return (
-        <Suspense fallback={<div>Loading search parameters...</div>}>
+        <Suspense fallback={
+            <div className="container mx-auto px-4 py-16 flex justify-center">
+                <div className="text-gray-500">Loading search parameters...</div>
+            </div>
+        }>
             <PlayerPageContent />
         </Suspense>
     )
 }
 
-export default playerPage
+export default PlayerPage
