@@ -1,5 +1,6 @@
 const API_URL_MAPPING = {
     DEVELOPMENT: "http://localhost:5000",
+    PRODUCTION: "https://tbanks.pythonanywhere.com"
 };
 
 
@@ -28,4 +29,4 @@ export const positionMap = {
 
 
 
-export const API_URL = API_URL_MAPPING.DEVELOPMENT;
+export const API_URL = API_URL_MAPPING.PRODUCTION; // Change to DEVELOPMENT for local testing

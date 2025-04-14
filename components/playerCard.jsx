@@ -62,7 +62,7 @@ const PlayerCard = ({ name, team, position, imageUrl }) => {
 
       <div className="flex justify-between items-center px-4">
         <p className="text-sm text-gray-600">{team}</p>
-        <a href='' className='text-sm'>View Similar</a>
+        <a href='' className='text-sm'></a>
       </div>
 
 
