@@ -29,4 +29,4 @@ export const positionMap = {
 
 
 
-export const API_URL = API_URL_MAPPING.DEVELOPMENT; // Change to DEVELOPMENT for local testing
+export const API_URL = API_URL_MAPPING.PRODUCTION; // Change to DEVELOPMENT for local testing
