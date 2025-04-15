@@ -19,6 +19,21 @@ function PlayerPageContent() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const fetchSimilarityEngine = async () => {
+        try {
+            const response = await axios.get(`${API_URL}/similar-players`, {
+                params: {
+                  player: player, // Axios automatically encodes the value
+                  use_positions: false // Include this parameter in the request
+                }
+              });
+            setSimilarityData(response.data);
+        } catch (err) {
+            console.error('Error fetching similarity data:', err);
+            setError('Failed to load similarity data');
+        }
+    }
+
     useEffect(() => {
         // Fetch player details when the component mounts and we have a player name
         async function fetchPlayerDetails() {
@@ -30,7 +45,7 @@ function PlayerPageContent() {
             try {
                 const response = await axios.get(`${API_URL}/role-analysis`, {
                     params: {
-                      player: player // Axios automatically encodes the value
+                      player: player, // Axios automatically encodes the value
                     }
                   });
                 setPlayerData(response.data);
@@ -114,7 +129,11 @@ function PlayerPageContent() {
                 
                 {/* Similarity engine section */}
                 <div className="mt-4">
-                    <SimilarityEngine similarityData={similarityData}/>
+                    <SimilarityEngine 
+                        similarityData={similarityData} 
+                        fetchSimilarityEngine={fetchSimilarityEngine} 
+                        player={player}
+                    />
                 </div>
             </section>
         </div>

@@ -11,7 +11,7 @@ import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FilterIcon } from 'lucide-react';
 
-const SimilarityEngine = ({ similarityData }) => {
+const SimilarityEngine = ({ similarityData, fetchSimilarityEngine, player }) => {
   // Check if similarityData exists and has similar_players property
   if (!similarityData || !similarityData.similar_players) {
     return (
@@ -22,6 +22,9 @@ const SimilarityEngine = ({ similarityData }) => {
   }
 
   const similarPlayersData = similarityData.similar_players;
+  const alternatePlayersData = similarityData.alternate_similar_players;
+
+  const [selectedData, setSelectedData] = useState(similarPlayersData);
 
   // State for filters
   const [filters, setFilters] = useState({
@@ -35,7 +38,7 @@ const SimilarityEngine = ({ similarityData }) => {
   });
 
   // Filter players based on current filter settings
-  const filteredPlayers = similarPlayersData.filter(player => {
+  const filteredPlayers = selectedData.filter(player => {
     // Market Value Filter
     const meetsMarketValue =
       player.player_market_value_euro >= filters.marketValueRange[0] &&
@@ -69,8 +72,10 @@ const SimilarityEngine = ({ similarityData }) => {
 
     // Alternate Positions Filter
     const meetsPositionFilter = filters.alternatePositions
-      ? player.positions && player.positions.length > 1
+      ? true
       : true;
+
+
 
     return meetsMarketValue && meetsAge && meetsPreferredFoot && meetsPositionFilter;
   });
@@ -101,10 +106,21 @@ const SimilarityEngine = ({ similarityData }) => {
   };
 
   const handleAlternatePositionsChange = () => {
+    // Toggle the filter state first
     setFilters(prev => ({
       ...prev,
       alternatePositions: !prev.alternatePositions
     }));
+    
+    // Then switch between the two datasets based on the new state
+    // Note that we need to check the NEXT state (opposite of current)
+    if (!filters.alternatePositions) {
+      // If it's going to be checked, show alternate players
+      setSelectedData(alternatePlayersData);
+    } else {
+      // If it's going to be unchecked, show similar players
+      setSelectedData(similarPlayersData);
+    }
   };
 
   return (
@@ -192,7 +208,7 @@ const SimilarityEngine = ({ similarityData }) => {
                 htmlFor="alternate-positions"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Multiple Positions
+                Alternate Positions
               </label>
             </div>
           </PopoverContent>
